@@ -1,6 +1,6 @@
-import sunriseJourney from '../assets/images/sunrise-journey.png'
-import forestRiverSpread from '../assets/images/forest-river-spread.png'
-import starsHomeSpread from '../assets/images/stars-home-spread.png'
+import sunriseJourney from '../assets/images/sunrise-journey.png?url'
+import forestRiverSpread from '../assets/images/forest-river-spread.png?url'
+import starsHomeSpread from '../assets/images/stars-home-spread.png?url'
 
 export const littleTraveler = {
   id: 'little-traveler',
