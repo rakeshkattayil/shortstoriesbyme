@@ -4,6 +4,7 @@ import MusicToggle from './MusicToggle'
 
 export default function StoryBook({ story, onHome }) {
   const [spread, setSpread] = useState(0), [turning, setTurning] = useState(false), [menu, setMenu] = useState(false), [direction, setDirection] = useState('next')
+  const [theme, setTheme] = useState('light')
   const startX = useRef(null)
   const last = story.spreads.length - 1
   const go = (next) => {
@@ -17,15 +18,15 @@ export default function StoryBook({ story, onHome }) {
   useEffect(() => { const key = e => { if (e.key === 'ArrowRight') go(true); if (e.key === 'ArrowLeft') go(false) }; window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key) })
   const touchEnd = e => { if (startX.current === null) return; const delta = e.changedTouches[0].clientX - startX.current; if (Math.abs(delta) > 40) go(delta < 0); startX.current = null }
   const current = story.spreads[spread]
-  return <main className="reader" onTouchStart={e => { startX.current = e.touches[0].clientX }} onTouchEnd={touchEnd}>
+  return <main className={`reader ${theme === 'dark' ? 'theme-dark' : 'theme-light'}`} onTouchStart={e => { startX.current = e.touches[0].clientX }} onTouchEnd={touchEnd}>
     <MusicToggle />
     <button className="home-tab" onClick={onHome}><span>⌂</span><b>Home</b></button>
     <section className="book-stage" aria-label={`${story.title}, spread ${spread + 1} of ${story.spreads.length}`}>
       <header className="book-header"><p>Little Storybook</p><h1>{story.title}</h1><span>Chapter {spread + 1}</span></header>
       <div className={`open-book ${turning ? `turning ${direction}` : ''}`}>
-        <div className="page-stack left-stack" /><StoryPage page={current.left} side="left" image={current.art} />
+        <div className="page-stack left-stack" /><StoryPage page={current.left} side="left" image={current.art} onThemeChange={setTheme} />
         <div className="spine" />
-        <StoryPage page={current.right} side="right" image={current.art} /><div className="page-stack right-stack" />
+        <StoryPage page={current.right} side="right" image={current.art} onThemeChange={setTheme} /><div className="page-stack right-stack" />
         {turning && <div className="turning-leaf" aria-hidden="true" />}
       </div>
       <button className={`bookmark ${menu ? 'open' : ''}`} onClick={() => setMenu(v => !v)} aria-expanded={menu} aria-label="Open story menu"><i /><i /><i /></button>
